@@ -425,13 +425,13 @@ class FourthPage(tk.Frame):
 
         for j in range(8):#el 60 es para 8 minutos, 6 es para prueba de 48 seg, 15 para 2 minutos
             x = random.sample(range(1,11),9)
-            lista = ['pics/notify/ct{}.jpg'.format(i) for i in x] 
+            lista = ['pics/notif/ct{}.jpg'.format(i) for i in x] 
 
             now_rand_mt = random.randrange(1,11)
             while last_rand_mt == now_rand_mt:
                 now_rand_mt = random.randrange(1,11)
 
-            lista.insert(random.randrange(0,10),'pics/notify/mt{}.jpg'.format(now_rand_mt))
+            lista.insert(random.randrange(0,10),'pics/notif/mt{}.jpg'.format(now_rand_mt))
             last_rand_mt = now_rand_mt
             lista_final.extend(lista)
 
@@ -666,12 +666,13 @@ class FivePage(tk.Frame):
 
 
         # Predict LGBM Regressor
-        regressor = pickle.load(open('models/regressor_fabrizio___.sav', 'rb'))  
+        regressor = pickle.load(open('models/regressor_jose___.sav', 'rb'))  
 
         X = df_all_features[df_all_features.columns.difference(['rt', 'vtc', 'class', 'n_experiment'])]  # rt, vtc, class, n_experiment
         y = df_all_features['rt']
 
         y_pred_regressor = regressor.predict(X)
+        df_all_features['rt'] = y_pred_regressor
         x = np.linspace(0, 5.07, num=df_all_features["vtc"].shape[0])
 
         # Show model performance
@@ -681,7 +682,7 @@ class FivePage(tk.Frame):
 
 
         # Predict LGBM Classifier
-        classifier = pickle.load(open('models/classifier_fabrizio___.sav', 'rb'))  
+        classifier = pickle.load(open('models/classifier_jose___.sav', 'rb'))  
 
         y = df_all_features['class']
 
@@ -713,9 +714,12 @@ class FivePage(tk.Frame):
         tr_smooth = gaussian_filter1d(y_pred_regressor, sigma=0.5)
         energy_smooth = gaussian_filter1d(energy, sigma=0.5)
 
+        df_all_features = pfunc.compute_only_vtc(df_all_features)
+
         # create the barchart
-        self.axes2.plot(x, y_pred_classifier+2, color= '#4932DB') # real
-        self.axes2.plot(x, 3*(tr_smooth)+0.5, color= 'black', linewidth=2) # real
+        self.axes2.plot(x, df_all_features["vtc"]+2, color= 'gray', linestyle="--") # modelo
+        self.axes2.plot(x, y_pred_classifier+2, color= '#4932DB') # modelo
+        self.axes2.plot(x, 3*(tr_smooth)+0.5, color= 'black', linewidth=2) # modelo
         self.axes2.plot(x, energy_smooth+1) 
         self.axes2.plot(x, zcr) 
         self.axes2.plot(x, zcr_dir-1)

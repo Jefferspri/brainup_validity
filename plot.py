@@ -6,10 +6,10 @@ import pickle
 from moduls import process_functions as pfunc
 
 
-df_all_features = pd.read_csv("exports/all_features_fabrizio___.csv")
+df_all_features = pd.read_csv("exports/all_features_jose___.csv")
 
 # Predict LGBM Regressor
-regressor = pickle.load(open('models/regressor_fabrizio___.sav', 'rb'))  
+regressor = pickle.load(open('models/regressor_jose___.sav', 'rb'))  
 
 X = df_all_features[df_all_features.columns.difference(['rt', 'vtc', 'class', 'n_experiment'])]  # rt, vtc, class, n_experiment
 
@@ -19,7 +19,7 @@ df_all_features["rt"] = y_pred_regressor
 df_all_features = pfunc.compute_only_vtc(df_all_features)
 
 # Predict LGBM Classifier
-classifier = pickle.load(open('models/classifier_fabrizio___.sav', 'rb'))  
+classifier = pickle.load(open('models/classifier_jose___.sav', 'rb'))  
 
 y_pred_classifier = classifier.predict(X)
 df_all_features["class"] = y_pred_classifier
