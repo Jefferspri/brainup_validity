@@ -49,8 +49,8 @@ from moduls import tr_moduls as trm
 from moduls.neurofeedback import record
 from moduls import process_functions as pfunc
 
-#import warnings
-#warnings.filterwarnings("ignore")
+import warnings
+warnings.filterwarnings("ignore")
 
 class UserInfo(tk.Frame):
 
@@ -456,7 +456,7 @@ class FourthPage(tk.Frame):
         
         self.btn_back.place_forget()
         self.btn_start.place_forget()
-        #self.btn_result.place_forget()
+        self.btn_result.place_forget()
 
         global recording
         global auxCount
@@ -526,7 +526,7 @@ class FourthPage(tk.Frame):
         self.pb.place(x=650,y=50)
         self.btn_start.place(x=1555, y=350)
         self.btn_back.place(x=1, y=1)
-        #self.btn_result.place(x=1500, y=500)
+        self.btn_result.place(x=1500, y=500)
         
         print("Recording Stopped.")
    
@@ -622,6 +622,7 @@ class FivePage(tk.Frame):
             
         all_raw_data.pop('eeg') # drop column with data now separte in various columns
         df_raw = pd.DataFrame.from_dict(all_raw_data)
+        df_raw['time'] = df_raw['time'].map(lambda x: datetime.datetime.fromtimestamp(x))
         df_raw.to_csv("exports/eeg_"+user_info+".csv", index=False)
         
         # Formating Data
@@ -661,7 +662,7 @@ class FivePage(tk.Frame):
         # Number of experiment
         df_features["n_experiment"] = [100 for l in range(df_features.shape[0])]
         df_all_features = df_features.fillna(0)
-        df_all_features.to_csv("exports/all_features_"+user_info+".csv", index=False)
+        #df_all_features.to_csv("exports/all_features_"+user_info+".csv", index=False)
 
 
 
@@ -854,7 +855,7 @@ def task_tk():
         
      
 # a little necesary time to don't interrupt eeg capture init         
-time.sleep(1)
+time.sleep(10)
 
 # DBus object paths
 BLUEZ_SERVICE = 'org.bluez'

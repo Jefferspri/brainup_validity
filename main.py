@@ -11,7 +11,7 @@ adapter = bus.get(BLUEZ_SERVICE, ADAPTER_PATH)
 adapter.Powered = True  
 
 commands = [
-    "date; muselsl stream --address 00:55:DA:B7:B5:F2",
+    "date; muselsl stream --address 00:55:DA:B5:E1:E7",
     "date; python3 UI_th.py"
     #"date; muselsl record --duration 60",
     #"date; python neurofeedback.py",

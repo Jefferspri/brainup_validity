@@ -34,7 +34,8 @@ def formating_data(df_eeg, df_rt):
     df_rt['time'] =  pd.to_datetime(df_rt['time'])
     
     # Formating EEG
-    df_eeg['time'] = df_eeg['time'].map(lambda x: datetime.datetime.fromtimestamp(x))
+    #df_eeg['time'] = df_eeg['time'].map(lambda x: datetime.datetime.fromtimestamp(x))
+    df_eeg['time'] =  pd.to_datetime(df_eeg['time'])
     df_eeg = df_eeg.iloc[:,:-1]
     df_eeg = df_eeg[df_eeg['time']>df_rt['time'].iloc[0]]
     df_eeg = df_eeg[df_eeg['time']<df_rt['time'].iloc[-1]]
@@ -78,7 +79,7 @@ def generate_df_rt_date(df_rt):
     df_rt_date['end'] = lst_date_end
     df_rt_date['rt'] = lst_f_tr_mean
     
-    df_rt_date = df_rt_date[(df_rt_date['rt']>=0.56)&(df_rt_date['rt']<=1.12)] # filter only valid answers
+    df_rt_date = df_rt_date[(df_rt_date['rt']>=0.4)&(df_rt_date['rt']<=1.12)] # filter only valid answers
     df_rt_date.reset_index(inplace=True, drop=True)
     
     return df_rt_date
@@ -124,7 +125,7 @@ def generate_df_rt_date_no_mean(df_rt):
     # Filter only valid answers between 0.56 and 1.12 seconds
     for n in range(df_rt_date.shape[0]):
         if not math.isnan(df_rt_date['rt'].iloc[n]):
-            if (df_rt_date['rt'].iloc[n]>=0.56)&(df_rt_date['rt'].iloc[n]<=1.12): 
+            if (df_rt_date['rt'].iloc[n]>=0.4)&(df_rt_date['rt'].iloc[n]<=1.12): 
                 mask.append(True)
             else:
                 mask.append(False)
